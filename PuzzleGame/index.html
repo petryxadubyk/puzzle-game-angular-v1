@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="pgfavicon.ico">
+
+    <title>Puzzle Game</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom css -->
+    <link href="css/site.css" rel="stylesheet">
+</head>
+
+<body ng-app="PuzzleGame">
+
+    <div class="container" ng-controller="gameCtrl">
+
+            <div class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#">Puzzle Game</a>
+                    </div>
+                    <div class="navbar-collapse collapse">
+
+                        <div class="pull-right">
+                <button ng-disabled="vm.gameState == vm.states.new" class="btn btn-top btn-success" type="button" ng-click="vm.startNewGame()">Start New Game</button>
+                <button ng-if="vm.gameState == vm.states.new" class="btn btn-top btn-success" type="button" ng-click="vm.giveUpGame()">Give Up</button>
+            </div>
+                    </div>
+                </div>
+            </div>
+
+
+        <div class="jumbotron">
+            <h2>{{vm.message}}</h2>
+
+            <p ng-if="vm.gameState == vm.states.new" class="lead">{{vm.maxTries - vm.tries}} Tryies Left</p>
+
+            <div ng-if="vm.gameState != vm.states.won" class="word-container">
+                <div ng-repeat="item in vm.letters" class="letter-box" ng-class="item.guessed ? 'guessed-letter' : ''">
+                    <span ng-if="item.guessed" class="letter-span">{{item.letter}}</span>
+                    <span ng-if="!item.guessed" class="glyphicon glyphicon-asterisk asterisk"></span>
+                </div>
+            </div>
+
+            <form ng-show="vm.gameState == vm.states.new" name="letterForm">
+                <div class="input-group letter-input-group">
+                    <input type="text" name="letter" class="form-control" placeholder="Type Your Letter"
+                           ng-model="vm.letter" ng-maxlength="1" required>
+
+                    <span class="input-group-btn">
+                       <button class="btn btn-success" type="submit" ng-click="vm.checkLetter()" ng-disabled="!letterForm.$valid">Go!</button>
+                    </span>
+
+                </div>
+                <span class="error" ng-show="letterForm.letter.$error.maxlength">single character only</span>
+            </form>
+
+        </div>
+
+        <div class="footer">
+            <p>&copy; Petro Dubyk 2014</p>
+        </div>
+
+
+    </div><!-- /.container -->
+
+
+    <!-- ================================================== -->
+    <!-- Vendor Scripts -->
+    <script src="libs/jquery-2.1.1.min.js"></script>
+    <script src="libs/angular.min.js"></script>
+    <script src="libs/bootstrap.min.js"></script>
+    <script src="libs/toastr.min.js"></script>
+
+    <!-- App Scripts -->
+    <script src="app/app.js"></script>
+    <script src="app/gameCtrl.js"></script>
+    <script src="app/secretService.js"></script>
+</body>
+</html>
